@@ -1,4 +1,4 @@
-package ai.devopsfinal;
+package pp.devopsfinal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
