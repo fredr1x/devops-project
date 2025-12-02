@@ -16,14 +16,13 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final LogActionService logActionService;
 
-    @Transactional
     public UserDto register(RegisterRequestDto request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already used");
