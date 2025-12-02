@@ -5,10 +5,12 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pp.devopsfinal.properties.MinioProperties;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class MinioService {
     public String uploadProfilePhoto(Long id, String fileName, InputStream data, String contentType) throws Exception {
         var user = userService.getUser(id);
 
-        if (user.getPhotoUrl() != null) {
+        if (StringUtils.isNotEmpty(user.getPhotoUrl())) {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(minioProperties.getBucket())
                     .object(user.getPhotoUrl())
@@ -30,12 +32,12 @@ public class MinioService {
 
         String objectName = user.getId() + "/" + fileName;
         userService.savePhotoUrl(user, objectName);
-        return upload(minioProperties.getBucket(), objectName, data, contentType);
+        return this.upload(minioProperties.getBucket(), objectName, data, contentType);
     }
 
     public InputStream getProfilePhoto(Long id) throws Exception {
         var user = userService.getUser(id);
-        if (user.getPhotoUrl() == null) {
+        if (Objects.isNull(user.getPhotoUrl())) {
             throw new RuntimeException("User has no profile photo");
         }
 
