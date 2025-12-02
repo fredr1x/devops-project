@@ -22,23 +22,20 @@ public class MinioConfiguration {
 
     @Bean
     public MinioClient minioClient() {
-        return MinioClient.builder()
+        MinioClient client = MinioClient.builder()
                 .endpoint(properties.getUrl())
                 .credentials(properties.getAccessKey(), properties.getSecretKey())
                 .build();
-    }
 
-    @Bean
-    public void createBucketIfNotExists(MinioClient minioClient) {
         try {
-            boolean exists = minioClient.bucketExists(
+            boolean exists = client.bucketExists(
                     BucketExistsArgs.builder()
                             .bucket(properties.getBucket())
                             .build()
             );
 
             if (!exists) {
-                minioClient.makeBucket(
+                client.makeBucket(
                         MakeBucketArgs.builder()
                                 .bucket(properties.getBucket())
                                 .build()
@@ -47,10 +44,11 @@ public class MinioConfiguration {
             } else {
                 log.info("Bucket '{}' already exists", properties.getBucket());
             }
-
         } catch (Exception e) {
             log.error("Error while checking/creating bucket: {}", e.getMessage());
             throw new RuntimeException(e);
         }
+
+        return client;
     }
 }
