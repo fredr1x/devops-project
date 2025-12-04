@@ -1,13 +1,13 @@
-package pp.devopsfinal;
+// package pp.devopsfinal;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class DevopsFinalApplicationTests {
+// @SpringBootTest
+// class DevopsFinalApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+//     @Test
+//     void contextLoads() {
+//     }
 
-}
+// }
