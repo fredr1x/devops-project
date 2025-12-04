@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY build.gradle settings.gradle gradle/ ./
 
-RUN gradle dependencies --no-daemon || true
+RUN gradle dependencies --no-daemon || truedock
 
 COPY . .
 
