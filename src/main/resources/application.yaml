@@ -28,3 +28,12 @@ minio:
 logging:
   level:
     root: INFO
+
+# === Actuator ===
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: "*"

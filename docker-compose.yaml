@@ -5,35 +5,35 @@ services:
       dockerfile: Dockerfile
     container_name: backend-service
     depends_on:
-      - postgres
-      - minio
+      - postgres-db
+      - minio-db
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/devops_project
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
 
-      MINIO_URL: ${MINIO_URL}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      MINIO_BUCKET: ${MINIO_BUCKET}
+      MINIO_URL: http://minio-db:9000
+      MINIO_ACCESS_KEY: root
+      MINIO_SECRET_KEY: minio12345
+      MINIO_BUCKET: mybucket
 
-      SERVER_PORT: ${SERVER_PORT}
+      SERVER_PORT: 8080
     ports:
       - "8080:8080"
     networks:
       - app-net
 
-  postgres:
+  postgres-db:
     image: postgres:15
     container_name: postgres-db
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: devops_project
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5450:5432"
+      - "5432:5432"
     networks:
       - app-net
 
@@ -41,22 +41,22 @@ services:
     image: dpage/pgadmin4:8.5
     container_name: pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
     depends_on:
-      - postgres
+      - postgres-db
     networks:
       - app-net
 
-  minio:
+  minio-db:
     image: minio/minio:RELEASE.2024-01-11T07-46-16Z
     container_name: minio-db
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: minio12345
     volumes:
       - minio_data:/data
     ports:
