@@ -7,7 +7,13 @@ spec:
   selector:
     app: backend
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 8080
       targetPort: 8080
       nodePort: 30081
+    - name: management
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+      nodePort: 30082

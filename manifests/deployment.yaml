@@ -19,6 +19,6 @@ spec:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: backend-config
+                name: app-config
             - secretRef:
-                name: backend-secret
+                name: app-secrets
